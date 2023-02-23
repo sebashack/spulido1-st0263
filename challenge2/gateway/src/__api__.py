@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 import json
 
 import files_grpc
@@ -6,16 +6,35 @@ import files_grpc
 app = Flask(__name__)
 
 
-@app.route("/files/list")
+@app.route("/files/list", methods=["GET"])
 def list_files():
-    files = files_grpc.list(app.config["GRPC_ADDR"])
-    return {"files": files}
+    args = request.args
+
+    limit = None
+    try:
+        limit = int(args["limit"])
+    except:
+        limit = None
+
+    result = files_grpc.list(app.config["GRPC_ADDR"], limit=limit)
+    return json.loads(result)
 
 
-@app.route("/files/search")
+@app.route("/files/search", methods=["GET"])
 def search_files():
-    files = files_grpc.search(app.config["GRPC_ADDR"])
-    return {"files": files}
+    args = request.args
+
+    if "pattern" not in args:
+        return {"error": "missing pattern"}, 400
+
+    limit = None
+    try:
+        limit = int(args["limit"])
+    except:
+        limit = None
+
+    result = files_grpc.search(app.config["GRPC_ADDR"], args["pattern"], limit=limit)
+    return json.loads(result)
 
 
 def main():

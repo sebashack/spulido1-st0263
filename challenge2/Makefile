@@ -20,6 +20,10 @@ run-gateway:
 run-m1:
 	cd ${CURDIR}/micro1-grpc && ${PYBIN} src
 
+.PHONY: run-m2
+run-m2:
+	cd ${CURDIR}/micro2-mom && ${PYBIN} src
+
 .PHONY: build-proto
 build-proto:
 	rm -rf ${BUILD_DIR}/proto_grpc

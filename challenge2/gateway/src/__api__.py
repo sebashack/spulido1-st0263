@@ -1,8 +1,13 @@
+import pika
 from flask import Flask, request
+from threading import Thread, Lock
 import json
 
 import files_grpc
+import files_mom
 
+# Mutex to switch between gRPC and MoM modes
+mode_mutex = Lock()
 app = Flask(__name__)
 
 
@@ -16,8 +21,19 @@ def list_files():
     except:
         limit = None
 
-    result = files_grpc.list(app.config["GRPC_ADDR"], limit=limit)
-    return json.loads(result)
+    result = None
+    mode_mutex.acquire()
+    if app.config["IS_GRPC"]:
+        app.config["IS_GRPC"] = False
+        mode_mutex.release()
+        result = files_grpc.list(app.config["GRPC_ADDR"], limit=limit)
+    else:
+        app.config["IS_GRPC"] = False
+        mode_mutex.release()
+        result = files_mom.list(app.config["MOM_CONNECTION"], limit=limit)
+
+    # return json.loads(result)
+    return json.loads("{}")
 
 
 @app.route("/files/search", methods=["GET"])
@@ -33,12 +49,37 @@ def search_files():
     except:
         limit = None
 
-    result = files_grpc.search(app.config["GRPC_ADDR"], args["pattern"], limit=limit)
-    return json.loads(result)
+    result = None
+    mode_mutex.acquire()
+    if app.config["IS_GRPC"]:
+        app.config["IS_GRPC"] = False
+        mode_mutex.release()
+        result = files_grpc.search(
+            app.config["GRPC_ADDR"], args["pattern"], limit=limit
+        )
+    else:
+        app.config["IS_GRPC"] = False
+        mode_mutex.release()
+        result = files_mom.search(
+            app.config["MOM_CONNECTION"], args["pattern"], limit=limit
+        )
+
+    # return json.loads(result)
+    return json.loads("{}")
 
 
 def main():
+    # gRPC setup
     app.config["GRPC_ADDR"] = "127.0.0.1:50051"
+
+    # MoM setup
+    credentials = pika.PlainCredentials("admin", "secret")
+    connection = pika.BlockingConnection(
+        pika.ConnectionParameters(host="127.0.0.1", port=5672, credentials=credentials)
+    )
+    app.config["MOM_CONNECTION"] = connection
+    app.config["IS_GRPC"] = False
+
     app.run(debug=False, host="127.0.0.1", port=8001)
 
 

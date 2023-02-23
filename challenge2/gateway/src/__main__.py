@@ -1,4 +1,3 @@
-import asyncio
 import grpc
 import logging
 import sys

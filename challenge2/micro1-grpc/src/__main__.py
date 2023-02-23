@@ -1,11 +1,9 @@
 from concurrent import futures
-import asyncio
 import grpc
-import logging
-import sys
 
 import file_service_pb2
 import file_service_pb2_grpc
+
 
 class FileService(file_service_pb2_grpc.FileService):
     def ListFiles(self, request, context):
@@ -28,10 +26,9 @@ def serve():
     server.wait_for_termination()
 
 
-def main(argv):
-    logging.basicConfig()
+def main():
     serve()
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    main()

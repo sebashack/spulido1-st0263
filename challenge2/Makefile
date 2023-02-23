@@ -12,6 +12,14 @@ set-py-venv:
 set-py-venv-with-deps: set-py-venv
 	${VENV_DIR}/bin/pip install -r requirements.txt
 
+.PHONY: run-gateway
+run-gateway:
+	cd ${CURDIR}/gateway && ${PYBIN} src/__api__.py
+
+.PHONY: run-m1
+run-m1:
+	cd ${CURDIR}/micro1-grpc && ${PYBIN} src
+
 .PHONY: build-proto
 build-proto:
 	rm -rf ${BUILD_DIR}/proto_grpc

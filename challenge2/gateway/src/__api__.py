@@ -27,13 +27,14 @@ def list_files():
         app.config["IS_GRPC"] = False
         mode_mutex.release()
         result = files_grpc.list(app.config["GRPC_ADDR"], limit=limit)
+        result["provider"] = "grpc"
     else:
-        app.config["IS_GRPC"] = False
+        app.config["IS_GRPC"] = True
         mode_mutex.release()
         result = files_mom.list(app.config["MOM_CONNECTION"], limit=limit)
+        result["provider"] = "mom"
 
-    # return json.loads(result)
-    return json.loads("{}")
+    return result, result["status"]
 
 
 @app.route("/files/search", methods=["GET"])
@@ -57,15 +58,16 @@ def search_files():
         result = files_grpc.search(
             app.config["GRPC_ADDR"], args["pattern"], limit=limit
         )
+        result["provider"] = "grpc"
     else:
-        app.config["IS_GRPC"] = False
+        app.config["IS_GRPC"] = True
         mode_mutex.release()
         result = files_mom.search(
             app.config["MOM_CONNECTION"], args["pattern"], limit=limit
         )
+        result["provider"] = "mom"
 
-    # return json.loads(result)
-    return json.loads("{}")
+    return result, result["status"]
 
 
 def main():
@@ -77,8 +79,9 @@ def main():
     connection = pika.BlockingConnection(
         pika.ConnectionParameters(host="127.0.0.1", port=5672, credentials=credentials)
     )
+
     app.config["MOM_CONNECTION"] = connection
-    app.config["IS_GRPC"] = False
+    app.config["IS_GRPC"] = True
 
     app.run(debug=False, host="127.0.0.1", port=8001)
 

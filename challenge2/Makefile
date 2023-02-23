@@ -14,12 +14,13 @@ set-py-venv-with-deps: set-py-venv
 
 .PHONY: build-proto
 build-proto:
+	rm -rf ${BUILD_DIR}/proto_grpc
 	mkdir -p ${BUILD_DIR}/proto_grpc
-	${PYBIN} -m grpc_tools.protoc -Iprotos --python_out=${BUILD_DIR}/proto_grpc --pyi_out=${BUILD_DIR}/proto_grpc --grpc_python_out=${BUILD_DIR}/proto_grpc protos/message.proto
-	rm -rf ${CURDIR}/gateway/src/proto_grpc
-	rm -rf ${CURDIR}/micro1-grpc/src/proto_grpc
-	cp -r ${BUILD_DIR}/proto_grpc ${CURDIR}/gateway/src/
-	cp -r ${BUILD_DIR}/proto_grpc ${CURDIR}/micro1-grpc/src/
+	${PYBIN} -m grpc_tools.protoc -Iprotos --python_out=${BUILD_DIR}/proto_grpc --pyi_out=${BUILD_DIR}/proto_grpc --grpc_python_out=${BUILD_DIR}/proto_grpc protos/file_service.proto
+	rm -rf ${CURDIR}/gateway/src/*_pb2*
+	rm -rf ${CURDIR}/micro1-grpc/src/*_pb2*
+	cp -a ${BUILD_DIR}/proto_grpc/* ${CURDIR}/gateway/src/
+	cp -a ${BUILD_DIR}/proto_grpc/* ${CURDIR}/micro1-grpc/src/
 
 .PHONY: clean
 clean:
@@ -27,5 +28,5 @@ clean:
 	rm -rf ${BUILD_DIR}
 	rm -rf ${CURDIR}/gateway/src/__pycache__
 	rm -rf ${CURDIR}/micro1-grpc/src/__pycache__
-	rm -rf ${CURDIR}/gateway/src/proto_grpc
-	rm -rf ${CURDIR}/micro1-grpc/src/proto_grpc
+	rm -rf ${CURDIR}/gateway/src/*_pb2*
+	rm -rf ${CURDIR}/micro1-grpc/src/*_pb2*

@@ -1,0 +1,21 @@
+version: '3.1'
+networks:
+  devel_rabbitmq:
+    external: false
+
+services:
+  rabbitmq_service:
+    container_name: devel_rabbitmq
+    hostname: devrabbit
+    image: rabbitmq:3.8-management
+    ports:
+      - "5672:5672"
+      - "8088:15672"
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: secret
+    networks:
+      - devel_rabbitmq
+    volumes:
+      - ${RABBIT_HOME_DIR}:/var/lib/rabbitmq

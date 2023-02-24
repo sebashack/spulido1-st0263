@@ -40,5 +40,8 @@ clean:
 	rm -rf ${BUILD_DIR}
 	rm -rf ${CURDIR}/gateway/src/__pycache__
 	rm -rf ${CURDIR}/micro1-grpc/src/__pycache__
+	rm -rf ${CURDIR}/micro1-mom/src/__pycache__
+	rm -rf ${CURDIR}/mom-setup/__pycache__
 	rm -rf ${CURDIR}/gateway/src/*_pb2*
 	rm -rf ${CURDIR}/micro1-grpc/src/*_pb2*
+	rm -rf ${CURDIR}/micro2-mom/src/*_pb2*

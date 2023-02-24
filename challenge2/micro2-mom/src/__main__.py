@@ -6,7 +6,7 @@ import pika
 
 def list_files(dir_path, pattern="*", limit=None):
     files = list(map(lambda p: str(p), pathlib.Path(dir_path).glob("**/" + pattern)))
-    if limit < 1 or limit is None:
+    if limit is None or limit < 1:
         return {"found": len(files), "files": files}
     else:
         return {"found": len(files), "files": files[:limit]}

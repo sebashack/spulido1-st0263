@@ -31,7 +31,7 @@ def list_files():
     else:
         app.config["IS_GRPC"] = True
         mode_mutex.release()
-        result = files_mom.list(app.config["MOM_CONNECTION"], limit=limit)
+        result = files_mom.list(app, limit=limit)
         result["provider"] = "mom"
 
     return result, result["status"]
@@ -62,9 +62,7 @@ def search_files():
     else:
         app.config["IS_GRPC"] = True
         mode_mutex.release()
-        result = files_mom.search(
-            app.config["MOM_CONNECTION"], args["pattern"], limit=limit
-        )
+        result = files_mom.search(app, args["pattern"], limit=limit)
         result["provider"] = "mom"
 
     return result, result["status"]
@@ -76,11 +74,14 @@ def main():
 
     # MoM setup
     credentials = pika.PlainCredentials("admin", "secret")
-    connection = pika.BlockingConnection(
-        pika.ConnectionParameters(host="127.0.0.1", port=5672, credentials=credentials)
+    app.config["MOM_CONNECTION"] = files_mom.mk_connection(
+        credentials, "127.0.0.1", 5672
     )
-
-    app.config["MOM_CONNECTION"] = connection
+    app.config["MOM_CONN_INFO"] = {
+        "host": "127.0.0.1",
+        "port": 5672,
+        "credentials": credentials,
+    }
     app.config["IS_GRPC"] = True
 
     app.run(debug=False, host="127.0.0.1", port=8001)

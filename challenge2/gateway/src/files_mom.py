@@ -3,30 +3,30 @@ import pika
 import uuid
 
 
-def list(conn, limit=None):
+def list(app, limit=None):
     message = {"type": "list", "limit": limit}
-    channel = conn.channel()
+    channel = mk_channel(app)
     channel.basic_publish(
         exchange="fs-producer", routing_key="msg-send", body=json.dumps(message)
     )
     channel.close()
 
-    return consume_mom_queue(conn)
+    return consume_mom_queue(app)
 
 
-def search(conn, pattern, limit=None):
+def search(app, pattern, limit=None):
     message = {"type": "search", "pattern": pattern, "limit": limit}
-    channel = conn.channel()
+    channel = mk_channel(app)
     channel.basic_publish(
         exchange="fs-producer", routing_key="msg-send", body=json.dumps(message)
     )
     channel.close()
 
-    return consume_mom_queue(conn)
+    return consume_mom_queue(app)
 
 
-# Helper
-def consume_mom_queue(conn):
+# Helpers
+def consume_mom_queue(app):
     tag = str(uuid.uuid4())
     result = {"error": "Failed to receive response", "status": 500}
     container = {"value": result}
@@ -38,9 +38,10 @@ def consume_mom_queue(conn):
             container["value"]["status"] = 200
         finally:
             channel.basic_cancel(consumer_tag=tag)
+            channel.close()
 
     # Consume the producer queue
-    channel = conn.channel()
+    channel = mk_channel(app)
     channel.basic_consume(
         consumer_tag=tag,
         queue="fs-consumer",
@@ -50,3 +51,29 @@ def consume_mom_queue(conn):
     channel.start_consuming()
 
     return container["value"]
+
+
+def mk_connection(credentials, host, port):
+    return pika.BlockingConnection(
+        pika.ConnectionParameters(host=host, port=port, credentials=credentials)
+    )
+
+
+def mk_channel(app):
+    channel = None
+    try:
+        channel = app.config["MOM_CONNECTION"].channel()
+    except Exception as e:
+        print(e)
+        reconnect_if_closed(app)
+        channel = app.config["MOM_CONNECTION"].channel()
+
+    return channel
+
+
+def reconnect_if_closed(app):
+    if app.config["MOM_CONNECTION"].is_closed:
+        info = app.config["MOM_CONN_INFO"]
+        app.config["MOM_CONNECTION"] = mk_connection(
+            info["credentials"], info["host"], info["port"]
+        )

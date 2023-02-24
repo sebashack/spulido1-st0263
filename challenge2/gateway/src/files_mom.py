@@ -4,46 +4,54 @@ import uuid
 
 
 def list(app, limit=None):
-    message = {"type": "list", "limit": limit}
+    req_id = str(uuid.uuid4())
+    message = {"type": "list", "limit": limit, "req_id": req_id}
     channel = mk_channel(app)
     channel.basic_publish(
         exchange="fs-producer", routing_key="msg-send", body=json.dumps(message)
     )
     channel.close()
 
-    return consume_mom_queue(app)
+    return consume_mom_queue(app, req_id)
 
 
 def search(app, pattern, limit=None):
-    message = {"type": "search", "pattern": pattern, "limit": limit}
+    req_id = str(uuid.uuid4())
+    message = {"type": "search", "pattern": pattern, "limit": limit, "req_id": req_id}
     channel = mk_channel(app)
     channel.basic_publish(
         exchange="fs-producer", routing_key="msg-send", body=json.dumps(message)
     )
     channel.close()
 
-    return consume_mom_queue(app)
+    return consume_mom_queue(app, req_id)
 
 
 # Helpers
-def consume_mom_queue(app):
-    tag = str(uuid.uuid4())
+def consume_mom_queue(app, correlation_id):
     result = {"error": "Failed to receive response", "status": 500}
     container = {"value": result}
 
     def on_response(channel, method, props, body):
         try:
-            container["value"] = json.loads(body)
-            print(f"Message with key '{method.routing_key}'")
-            container["value"]["status"] = 200
-        finally:
-            channel.basic_cancel(consumer_tag=tag)
-            channel.close()
+            msg = json.loads(body)
+
+            if msg["req_id"] == correlation_id:
+                container["value"] = msg
+                print(f"Message with key '{method.routing_key}'")
+                container["value"]["status"] = 200
+
+                channel.basic_cancel(consumer_tag=correlation_id)
+                channel.close()
+            else:
+                print(f"Request-id mismatch: Discarding ...")
+        except (JSONDecodeError, json.JSONDecodeError):
+            pass
 
     # Consume the producer queue
     channel = mk_channel(app)
     channel.basic_consume(
-        consumer_tag=tag,
+        consumer_tag=correlation_id,
         queue="fs-consumer",
         auto_ack=True,
         on_message_callback=on_response,

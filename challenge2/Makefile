@@ -12,6 +12,10 @@ set-py-venv:
 set-py-venv-with-deps: set-py-venv
 	${VENV_DIR}/bin/pip install -r requirements.txt
 
+.PHONY: rabbit-setup
+rabbit-setup:
+	${PYBIN} ${CURDIR}/mom-setup
+
 .PHONY: run-gateway
 run-gateway:
 	cd ${CURDIR}/gateway && ${PYBIN} src/__api__.py

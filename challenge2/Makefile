@@ -18,7 +18,7 @@ rabbit-setup:
 
 .PHONY: run-gateway
 run-gateway:
-	cd ${CURDIR}/gateway && ${PYBIN} src/__api__.py
+	cd ${CURDIR}/gateway && ${PYBIN} src/__api__.py config.json
 
 .PHONY: run-m1
 run-m1:

@@ -1,0 +1,10 @@
+{
+  "host": "127.0.0.1",
+  "port": 8081,
+  "grpc_host": "127.0.0.1",
+  "grpc_port": 50051,
+  "rabbit_user": "admin",
+  "rabbit_password": "secret",
+  "rabbit_host": "127.0.0.1",
+  "rabbit_port": 5672
+}

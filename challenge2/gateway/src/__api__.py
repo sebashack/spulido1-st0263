@@ -1,7 +1,9 @@
-import pika
 from flask import Flask, request
 from threading import Thread, Lock
+import argparse
 import json
+import pika
+import sys
 
 import files_grpc
 import files_mom
@@ -68,24 +70,34 @@ def search_files():
     return result, result["status"]
 
 
-def main():
+def main(argv):
+    parser = argparse.ArgumentParser(description="File service API gateway")
+
+    parser.add_argument("config", type=str, help="Path to config file")
+
+    args = parser.parse_args(argv[1:])
+
+    config_path = args.config
+
+    conf = json.loads(open(config_path, "r").read())
+
     # gRPC setup
-    app.config["GRPC_ADDR"] = "127.0.0.1:50051"
+    app.config["GRPC_ADDR"] = f"{conf['grpc_host']}:{conf['grpc_port']}"
 
     # MoM setup
-    credentials = pika.PlainCredentials("admin", "secret")
+    credentials = pika.PlainCredentials(conf['rabbit_user'], conf['rabbit_password'])
     app.config["MOM_CONNECTION"] = files_mom.mk_connection(
-        credentials, "127.0.0.1", 5672
+        credentials, conf['rabbit_host'], conf['rabbit_port']
     )
     app.config["MOM_CONN_INFO"] = {
-        "host": "127.0.0.1",
-        "port": 5672,
+        "host": conf['rabbit_host'],
+        "port": conf['rabbit_port'],
         "credentials": credentials,
     }
     app.config["IS_GRPC"] = True
 
-    app.run(debug=False, host="127.0.0.1", port=8001)
+    app.run(debug=False, host=conf['host'], port=conf['port'])
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv)

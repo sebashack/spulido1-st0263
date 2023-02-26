@@ -26,7 +26,7 @@ run-m1:
 
 .PHONY: run-m2
 run-m2:
-	cd ${CURDIR}/micro2-mom && ${PYBIN} src
+	cd ${CURDIR}/micro2-mom && ${PYBIN} src config.json
 
 .PHONY: build-proto
 build-proto:

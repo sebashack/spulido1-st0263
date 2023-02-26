@@ -1,0 +1,7 @@
+{
+  "dir_path": "/home/sebastian/univeristy/networking/spulido1-st0263/challenge2",
+  "rabbit_user": "admin",
+  "rabbit_password": "secret",
+  "rabbit_host": "127.0.0.1",
+  "rabbit_port": "5672"
+}

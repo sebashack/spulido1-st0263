@@ -78,7 +78,6 @@ def main(argv):
     args = parser.parse_args(argv[1:])
 
     config_path = args.config
-
     conf = json.loads(open(config_path, "r").read())
 
     # gRPC setup

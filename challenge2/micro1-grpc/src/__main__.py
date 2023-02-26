@@ -1,13 +1,14 @@
 from concurrent import futures
-import os
-import logging
-import grpc
-import glob
-import pathlib
-import json
-
+import argparse
 import file_service_pb2
 import file_service_pb2_grpc
+import glob
+import grpc
+import json
+import logging
+import os
+import pathlib
+import sys
 
 
 class FileService(file_service_pb2_grpc.FileService):
@@ -44,22 +45,29 @@ class FileService(file_service_pb2_grpc.FileService):
             return {"found": len(files), "files": files[:limit]}
 
 
-def serve(port, dir_path):
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+def serve(port, dir_path, workers):
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=workers))
     file_service_pb2_grpc.add_FileServiceServicer_to_server(
         FileService(dir_path), server
     )
-    server.add_insecure_port("[::]:" + port)
+    server.add_insecure_port(f"[::]:{port}")
     server.start()
-    print("Server started, listening on " + port)
+    print(f"Server started, listening on {port}")
     server.wait_for_termination()
 
 
-def main():
-    port = "50051"
-    dir_path = "/home/sebastian/univeristy/networking/spulido1-st0263/challenge2"
-    serve(port, dir_path)
+def main(argv):
+    parser = argparse.ArgumentParser(description="File service API gateway")
+
+    parser.add_argument("config", type=str, help="Path to config file")
+
+    args = parser.parse_args(argv[1:])
+
+    config_path = args.config
+    conf = json.loads(open(config_path, "r").read())
+
+    serve(conf['port'], conf['dir_path'], conf['max_workers'])
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv)

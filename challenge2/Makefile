@@ -22,7 +22,7 @@ run-gateway:
 
 .PHONY: run-m1
 run-m1:
-	cd ${CURDIR}/micro1-grpc && ${PYBIN} src
+	cd ${CURDIR}/micro1-grpc && ${PYBIN} src config.json
 
 .PHONY: run-m2
 run-m2:

@@ -1,0 +1,5 @@
+{
+  "port": 50051,
+  "max_workers": 10,
+  "dir_path": "/home/sebastian/univeristy/networking/spulido1-st0263/challenge2"
+}

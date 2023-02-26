@@ -3,7 +3,7 @@
 set -xeuf -o pipefail
 
 # Install Python deps
-sudo apt install -y python3 python3-venv python3-pip build-essential curl
+sudo apt install -y python3 python3-venv python3-pip build-essential curl git
 python -m pip install --upgrade pip
 
 # Install docker

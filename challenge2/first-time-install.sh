@@ -4,7 +4,7 @@ set -xeuf -o pipefail
 
 # Install Python deps
 sudo apt install -y python3 python3-venv python3-pip build-essential curl git
-python -m pip install --upgrade pip
+python3 -m pip install --upgrade pip
 
 # Install docker
 if ! type "docker" > /dev/null; then

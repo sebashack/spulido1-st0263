@@ -274,8 +274,8 @@ Thus, the API gateway will switch between MoM and gRPC across multiple requests.
 
 ## 4) Deployment on AWS cloud
 
-This project lab is deployed in a EC2 instance on the AWS academy cloud. The type of machine chosen for this project is
-a `t2.micro` with an Ubuntu-22.04 image:
+This project lab is deployed in an EC2 instance (`spulido1-mom-grpc`) on the AWS academy cloud. The type of machine chosen
+for this project is a `t2.micro` with an Ubuntu-22.04 image:
 
 ![ec2-instance](./ec2-instance.jpeg)
 
@@ -284,14 +284,84 @@ The instance has the following security groups which allow inbound access to por
 ![sec-groups](./sec-groups.jpeg)
 
 
-There is nothing special about the deployment setup in this environment. Inside an SSH session with the aws instance
-just clone the project's repo with:
+There was nothing special about the deployment setup in this environment. In a SSH session with the aws instance the project
+repo was cloned at `/opt`:
+
 
 ```
+cd /opt
 git clone https://github.com/sebashack/spulido1-st0263.git
 ```
 
-Configure the API gateway to be served either on port 80 or 8080 and run the same setup, build and execution scripts as explained above.
+The API gateway was configured to be served on port 80 and the build and execution scripts were run as explained above.
+
+Finally, the following service files were created for each microservice:
+
+```
+[Unit]
+Description=File service grpc
+
+[Service]
+User=root
+WorkingDirectory=/opt/spulido1-st0263/challenge2
+ExecStart=make run-m1
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```
+[Unit]
+Description=File service mom
+
+[Service]
+User=root
+WorkingDirectory=/opt/spulido1-st0263/challenge2
+ExecStart=bash -c "make rabbit-setup && make run-m2"
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```
+[Unit]
+Description=File service gateway
+
+[Service]
+User=root
+WorkingDirectory=/opt/spulido1-st0263/challenge2
+ExecStart=bash -c "make rabbit-setup && make run-gateway"
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+```
+
+And the following commands were run to load the services in systemd:
+
+```
+sudo systemctl daemon-reload
+sudo systemctl enable filemom.service
+sudo systemctl enable filegrpc.service
+sudo systemctl enable gateway.service
+
+sudo systemctl start filemom.service
+sudo systemctl start filegrpc.service
+sudo systemctl start gateway.service
+```
+
+This means that our project will be automatically started when the EC2 instance boots. To check that it works, just send
+a request to the IP address that is dynamically attached to the `spulido1-mom-grpc` instance. For example, if the IP turns
+out to be `100.26.152.121` (remember that the gateway is served on port 80):
+
+```
+curl '100.26.152.121/files/list?limit=2'
+```
 
 
 ## 5) User guide

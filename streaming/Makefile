@@ -16,7 +16,7 @@ set-py-venv-with-deps: set-py-venv
 build-proto:
 	rm -rf ${BUILD_DIR}/proto_grpc
 	mkdir -p ${BUILD_DIR}/proto_grpc
-	${PYBIN} -m grpc_tools.protoc -Iprotos --python_out=${BUILD_DIR}/proto_grpc --pyi_out=${BUILD_DIR}/proto_grpc --grpc_python_out=${BUILD_DIR}/proto_grpc protos/file_service.proto
+	${PYBIN} -m grpc_tools.protoc -Iprotos --python_out=${BUILD_DIR}/proto_grpc --pyi_out=${BUILD_DIR}/proto_grpc --grpc_python_out=${BUILD_DIR}/proto_grpc protos/hellostreamingworld.proto
 	rm -rf ${CURDIR}/client/src/*_pb2*
 	rm -rf ${CURDIR}/server/src/*_pb2*
 	cp -a ${BUILD_DIR}/proto_grpc/* ${CURDIR}/client/src/

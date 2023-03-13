@@ -1,22 +1,23 @@
 import asyncio
 import logging
 
+import time
 import grpc
 from hellostreamingworld_pb2 import HelloReply
 from hellostreamingworld_pb2 import HelloRequest
 from hellostreamingworld_pb2_grpc import MultiGreeterServicer
 from hellostreamingworld_pb2_grpc import add_MultiGreeterServicer_to_server
 
-NUMBER_OF_REPLY = 10
-
-
 class Greeter(MultiGreeterServicer):
 
     async def sayHello(self, request: HelloRequest,
                        context: grpc.aio.ServicerContext) -> HelloReply:
         logging.info("Serving sayHello request %s", request)
-        for i in range(NUMBER_OF_REPLY):
+        i = 0
+        while True:
             yield HelloReply(message=f"Hello number {i}, {request.name}!")
+            i = i + 1
+            time.sleep(3)
 
 
 async def serve() -> None:

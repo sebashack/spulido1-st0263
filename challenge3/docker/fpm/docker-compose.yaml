@@ -1,0 +1,23 @@
+version: '3.1'
+networks:
+  dev_php:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.20.0.0/24"
+          gateway: "172.20.0.1"
+
+services:
+  phpfpm:
+    container_name: dev_fpm
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000"
+    networks:
+      dev_php:
+        ipv4_address: "172.20.0.2"
+    restart: always
+    volumes:
+      - ${WORDPRESS_DIR}:/var/www/html/wordpress

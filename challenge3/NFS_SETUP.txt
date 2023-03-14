@@ -1,0 +1,4 @@
+- sudo modprobe {nfs,nfsd,rpcsec_gss_krb5}
+- sudo apt install nfs-common
+- sudo mount -t nfs {IP of NFS server}:{folder path on server} /var/locally-mounted
+- umount -f -l /var/locally-mounted

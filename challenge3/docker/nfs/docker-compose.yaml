@@ -18,9 +18,9 @@ services:
       - "2049:2049"
     restart: always
     environment:
-      NFS_EXPORT_0: "/opt/wordpress                  *(rw,sync)"
+      NFS_EXPORT_0: "/mnt/wordpress                  *(rw,sync)"
     networks:
       wp_nfs:
         ipv4_address: "172.21.0.2"
     volumes:
-      - ${WORDPRESS_DIR}:/opt/wordpress
+      - ${WORDPRESS_DIR}:/mnt/wordpress

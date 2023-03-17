@@ -4,7 +4,7 @@ set -xeuf -o pipefail
 
 sudo apt update
 
-sudo apt install -y neovim nfs-common
+sudo apt install -y neovim nfs-common nfs-kernel-server
 
 # Install docker
 if ! type "docker" > /dev/null; then

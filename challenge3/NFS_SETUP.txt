@@ -1,4 +1,12 @@
 - sudo modprobe {nfs,nfsd,rpcsec_gss_krb5}
 - sudo apt install nfs-common
-- sudo mount -t nfs {IP of NFS server}:{folder path on server} /var/locally-mounted
+- sudo mount -t nfs 34.136.163.18:/mnt/wordpress /home/sebastian/mnt/wordpress
 - umount -f -l /var/locally-mounted
+
+# Automatic mount
+
+at /etc/fstab
+
+```
+10.128.0.5:/var/mnt/wordpress    /mnt/wordpress   nfs auto,nofail,noatime,nolock,intr,tcp,actimeo=1800 0 0
+```

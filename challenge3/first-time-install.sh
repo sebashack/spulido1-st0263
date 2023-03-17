@@ -16,12 +16,8 @@ if ! type "docker" > /dev/null; then
 
     apt-cache policy docker-ce
 
-    if [[ -v CI ]]; then
-        echo "Skipping creation of docker group"
-    else
-        sudo apt install -y docker-ce
-        sudo usermod -aG docker ${USER}
-    fi
+    sudo apt install -y docker-ce
+    sudo usermod -aG docker ${USER}
 else
     echo 'docker already installed'
 fi
@@ -32,4 +28,15 @@ if ! type "docker-compose" > /dev/null; then
     sudo chmod +x /usr/local/bin/docker-compose
 else
     echo 'docker-compose already installed'
+fi
+
+# Certbot deps
+if [[ -v WITH_CERTBOT ]]; then
+    sudo snap install core
+    sudo snap refresh core
+    sudo snap install --classic certbot
+    sudo ln -s /snap/bin/certbot /usr/bin/certbot
+    sudo certbot certonly --nginx
+else
+    echo "Skipping certbot installation"
 fi

@@ -6,7 +6,8 @@ ROOT="$( readlink -f "$( dirname "${BASH_SOURCE[0]}" )" )"
 DOCKER_FILE="${ROOT}/docker-compose.yaml"
 
 export NGINX_CONFIG_DIR="${ROOT}/config"
-export WORDPRESS_DIR="${ROOT}/../../wordpress"
+export WORDPRESS_DIR="/mnt/wordpress"
+export LETSENCRYPT_DIR="/etc/letsencrypt"
 
 if [[ $1 == "up" ]]; then
     docker-compose --file "$DOCKER_FILE" up --detach

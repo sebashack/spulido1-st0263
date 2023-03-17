@@ -33,3 +33,13 @@ if ! type "docker-compose" > /dev/null; then
 else
     echo 'docker-compose already installed'
 fi
+
+# Certbot deps
+if [[ -v WITH_CERTBOT ]]; then
+    sudo snap install core
+    sudo snap refresh core
+    sudo snap install --classic certbot
+    sudo ln -s /snap/bin/certbot /usr/bin/certbot
+else
+    echo "Skipping certbot installation"
+fi

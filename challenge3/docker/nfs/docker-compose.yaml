@@ -1,4 +1,12 @@
 version: '3.1'
+networks:
+  wp_nfs:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.19.0.0/24"
+          gateway: "172.19.0.1"
+
 services:
   nfs:
     container_name: wp_nfs
@@ -11,5 +19,8 @@ services:
     restart: always
     environment:
       NFS_EXPORT_0: "/mnt/wordpress                  *(rw,sync)"
+    networks:
+      wp_nfs:
+        ipv4_address: "172.19.0.2"
     volumes:
       - ${WORDPRESS_DIR}:/mnt/wordpress

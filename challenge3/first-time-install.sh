@@ -36,7 +36,6 @@ if [[ -v WITH_CERTBOT ]]; then
     sudo snap refresh core
     sudo snap install --classic certbot
     sudo ln -s /snap/bin/certbot /usr/bin/certbot
-    sudo certbot certonly --nginx
 else
     echo "Skipping certbot installation"
 fi

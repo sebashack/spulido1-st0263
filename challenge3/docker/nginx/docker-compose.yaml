@@ -1,16 +1,10 @@
 version: '3.1'
-networks:
-  dev_nginx:
-    external: false
-
 services:
   nginx:
     container_name: dev_nginx
     image: nginx:1.23.1
     ports:
       - "8081:8080"
-    networks:
-      - dev_nginx
     restart: always
     volumes:
       - ${NGINX_CONFIG_DIR}/nginx.conf:/etc/nginx/nginx.conf

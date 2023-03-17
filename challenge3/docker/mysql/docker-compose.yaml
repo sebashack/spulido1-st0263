@@ -1,12 +1,4 @@
 version: '3.1'
-networks:
-  wp_mysql:
-    ipam:
-      driver: default
-      config:
-        - subnet: "172.31.0.0/24"
-          gateway: "172.31.0.1"
-
 services:
   mysql:
     container_name: wp_mysql
@@ -20,9 +12,6 @@ services:
       MYSQL_DATABASE: wordpressdb
       MYSQL_USER: wordpress
       MYSQL_PASSWORD: secret
-    networks:
-      wp_mysql:
-        ipv4_address: "172.31.0.2"
     volumes:
       - ${MYSQL_DATA_DIR}:/var/lib/mysql
       - ${MYSQL_SCRIPTS_DIR}:/opt/mysql/scripts

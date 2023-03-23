@@ -11,11 +11,11 @@
 The Wordpress deployment for this project has the following accomplishments as required by the lab guide:
 
 - A NFS GCP VM instance where the Wordpress directory has been downloaded.
-- Two GCP VM instances with [php-fpm](https://www.php.net/manual/en/install.fpm.php), which a production ready PHP FastCGI
+- Two GCP VM instances with [php-fpm](https://www.php.net/manual/en/install.fpm.php), which is a production ready PHP FastCGI
   implementation that can communicate with NGINX and interpret (process) PHP files.
 - One GCP VM instance with NGINX that load balances the requests to the `php-fpm` instances that do the processing.
 - One GCP VM instance with MySQL.
-- One domain at which the website can be reached: https://sebastianpg.pro
+- One domain which the website can be reached at: https://sebastianpg.pro
 - SSL certificates created via certbot and Let's Encrypt.
 
 ## 2) Architecture
@@ -127,7 +127,7 @@ in the `service.sh` file is defined as:
 export WORDPRESS_DIR="/mnt/wordpress"
 ```
 
-that is, it points to mounting point with the NFS server.
+that is, it references then mounting point with the NFS server.
 
 Finally, for NGINX we have the following docker-compose configuration:
 
@@ -148,7 +148,7 @@ services:
 
 ```
 
-Notice that we expose the ports for HTTP and HTTPS, and we bind volumes for Wordpress (NFS mounting point), LETSENCRYPT
+Notice that we expose ports for HTTP and HTTPS, and we bind volumes for Wordpress (NFS mounting point), LETSENCRYPT
 (directory where ssl certificates where generated), and our custom `nginx.conf`. The whole NGINX configuration can be seen
 [here](https://github.com/sebashack/spulido1-st0263/blob/main/challenge3/docker/nginx/config/nginx.conf), but some key
 elements will be highlighted. SSL is enabled:
@@ -158,7 +158,7 @@ ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
 ssl_prefer_server_ciphers on;
 ```
 
-The upstreams section is declared with our two FPM instances. This is what enables load balancing:
+The upstreams section is declared with the IP addresses of our two FPM instances. This is what enables load balancing:
 
 ```
 upstream phpfpm {
@@ -218,7 +218,7 @@ The NFS server was setup on a separate instance by installing the following:
 sudo apt install -y nfs-kernel-server
 ```
 
-Then Wordpress was downloaded at `/var/mnt/wordpress`, and the following lines was added to `/etc/exports`:
+Then Wordpress was downloaded at `/var/mnt/wordpress`, and the following line was added to `/etc/exports`:
 
 ```
 /var/mnt/wordpress                  *(rw,sync)
@@ -253,7 +253,7 @@ The domain `sebastianpg.pro` was obtained via `name.com`:
 
 ![domain.png](assets/domain.png)
 
-Additionally, we setup `name.com` DNS with the appropriate A and CNAME records:
+Additionally, we set up `name.com` DNS with the appropriate A and CNAME records:
 
 ![dns.png](assets/dns.png)
 
@@ -294,3 +294,11 @@ for php-fpm, one for NGINX, one for MySQL, and one for the NFS server:
 ![instances.png](assets/instances.png)
 
 An static IP was fixed for the NGINX instance, namely, `35.238.250.140`.
+
+All of the machines can be stopped and on reboot all of the docker-containers and mounting points will be setup automatically.
+
+## 5) References
+
+- https://www.php.net/manual/en/install.fpm.php
+- https://www.nginx.com/resources/wiki/start/topics/recipes/wordpress/
+- https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-20-04

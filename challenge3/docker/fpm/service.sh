@@ -5,7 +5,7 @@ set -xeuf -o pipefail
 ROOT="$( readlink -f "$( dirname "${BASH_SOURCE[0]}" )" )"
 DOCKER_FILE="${ROOT}/docker-compose.yaml"
 
-export WORDPRESS_DIR="$/mnt/wordpress"
+export WORDPRESS_DIR="/mnt/wordpress"
 
 if [[ $1 == "up" ]]; then
     docker-compose --file "$DOCKER_FILE" up --detach

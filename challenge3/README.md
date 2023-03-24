@@ -297,6 +297,18 @@ An static IP was fixed for the NGINX instance, namely, `35.238.250.140`.
 
 All of the machines can be stopped and on reboot all of the docker-containers and mounting points will be setup automatically.
 
+Also, all of the machines should have the directory `/home/sebastian0092/spulido1-st0263/challenge3` which contains the config
+files for each service that were developed in this repository.
+
+You can ssh to these machines with a command like this:
+
+```
+ssh -p 22 -AX sebastian0092@<machine-ip>
+```
+
+where `sebastian0092` is the user.
+
+
 ## 5) References
 
 - https://www.php.net/manual/en/install.fpm.php

@@ -55,4 +55,16 @@ Select file to upload:
 
 See file:
 
-![create-gui](assets/5.2/file-uploaded.png)
+![uploaded-gui](assets/5.2/file-uploaded.png)
+
+
+## 5) Copy dir to S3
+
+`spulido1-st0263]$ hadoop distcp  datasets  s3://st0263spulido/datasets/` was executed:
+
+![copy-s3](assets/5.2/cp-to-s3.png)
+
+
+`datasets` was uploaded to S3:
+
+![s3-dir](assets/5.2/s3-files.png)

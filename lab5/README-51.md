@@ -51,3 +51,12 @@ After having enabled port 22, it was possible to connect to primary instance via
 added to this instance. Now we are able to connect to ssh via linux console:
 
 ![ssh](assets/5.1/ssh-conn.png)
+
+
+## Hadoop
+
+A `hadoop` user was created and then it was possible to access the workspace:
+
+![hadoop-user](assets/5.1/hadoop-user.png)
+
+![hadoop-workspace](assets/5.1/hadoop-workspace.png)

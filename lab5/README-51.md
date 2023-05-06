@@ -28,3 +28,10 @@ Finally, roles default roles were configured:
 20 minutes or so after the form is submitted, the cluster is ready to be used:
 
 ![created](assets/5.1/cluster-created.png)
+
+
+## S3 bucket creation
+
+The s3 bucket to save jupyter notebooks was created:
+
+![s3](assets/5.1/s3bucket.png)

@@ -14,7 +14,7 @@ The cluster documentation was already documented [here](README-51.md).
 
 ![ssh](assets/5.2/ssh-connection.png)
 
-## 3) File management via terminal
+## 3) File management via terminal SSH
 
 ## 3.1) List files
 
@@ -40,5 +40,19 @@ Now we will copy that dir to `hdfs`:
 
 Now we can see that our files are visible on HUE:
 
+![hue-gui](assets/5.2/hue-gui2.png)
 
-![hue-gui](assets/5.2/hue-gui.png)
+
+## 4) File management via terminal gui
+
+Create another dir:
+
+![create-gui](assets/5.2/create-dir-hue.png)
+
+Select file to upload:
+
+![create-gui](assets/5.2/select_files.png)
+
+See file:
+
+![create-gui](assets/5.2/file-uploaded.png)

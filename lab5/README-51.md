@@ -60,3 +60,26 @@ A `hadoop` user was created and then it was possible to access the workspace:
 ![hadoop-user](assets/5.1/hadoop-user.png)
 
 ![hadoop-workspace](assets/5.1/hadoop-workspace.png)
+
+
+## Jupyterhub
+
+Access to jupyterhub user:
+
+![jupyter](assets/5.1/jupyterhub.png)
+
+
+Checking spark session:
+
+![spark](assets/5.1/spark-session.png)
+
+Checking that notebook was stored:
+
+![notebook](assets/5.1/notebook.png)
+
+
+## Zeppelin
+
+![zeppeling](assets/5.1/zeppelin.png)
+
+![zeppeling-note](assets/5.1/zeppelin-note.png)

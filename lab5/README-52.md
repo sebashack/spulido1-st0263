@@ -20,4 +20,8 @@ The cluster documentation was already documented [here](README-51.md).
 
 ![ssh-list](assets/5.2/list-files.png)
 
+## 3.2) Create datasets dir
 
+After running `hdfs dfs -mkdir /user/root/datasets` we can list our newly created dir:
+
+![datasets](assets/5.2/datasets-ls.png)

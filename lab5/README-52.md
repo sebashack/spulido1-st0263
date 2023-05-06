@@ -22,7 +22,7 @@ The cluster documentation was already documented [here](README-51.md).
 
 ## 3.2) Create datasets dir
 
-After running `hdfs dfs -mkdir /user/root/datasets` we can list our newly created dir:
+After running `hdfs dfs -mkdir /user/hadoop/datasets` we can list our newly created dir:
 
 ![datasets](assets/5.2/datasets-ls.png)
 

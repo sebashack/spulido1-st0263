@@ -25,3 +25,14 @@ The cluster documentation was already documented [here](README-51.md).
 After running `hdfs dfs -mkdir /user/root/datasets` we can list our newly created dir:
 
 ![datasets](assets/5.2/datasets-ls.png)
+
+
+
+We have a local copy of the `datasets` dir
+
+![datasets-local](assets/5.2/local-datasets.png)
+
+Now we will copy that dir to `hdfs`:
+
+
+![hdfs-dirs](assets/5.2/copied-dirs.png)

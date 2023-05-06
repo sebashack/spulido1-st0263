@@ -35,3 +35,19 @@ Finally, roles default roles were configured:
 The s3 bucket to save jupyter notebooks was created:
 
 ![s3](assets/5.1/s3bucket.png)
+
+
+## Security and ports
+
+The following ports have been opened:
+
+![ports](assets/5.1/open-ports.png)
+
+Also the following inbound rules were added for the primary (master) node:
+
+![security-group](assets/5.1/security-group.png)
+
+After having enabled port 22, it was possible to connect to primary instance via ssh and then another authorized_key was
+added to this instance. Now we are able to connect to ssh via linux console:
+
+![ssh](assets/5.1/ssh-conn.png)

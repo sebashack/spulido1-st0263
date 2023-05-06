@@ -36,3 +36,9 @@ Now we will copy that dir to `hdfs`:
 
 
 ![hdfs-dirs](assets/5.2/copied-dirs.png)
+
+
+Now we can see that our files are visible on HUE:
+
+
+![hue-gui](assets/5.2/hue-gui.png)

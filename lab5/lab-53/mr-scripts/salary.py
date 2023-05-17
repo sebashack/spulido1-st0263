@@ -5,7 +5,7 @@ from mrjob.step import MRStep
 class Salary(MRJob):
     def steps(self):
         return [
-            MRStep(mapper=self.mapper, reducer=self.count_reducer),
+            MRStep(mapper=self.mapper, reducer=self.reducer),
         ]
 
     def mapper(self, _, line):
@@ -28,7 +28,7 @@ class Salary(MRJob):
             yield (f"employee-{idemp}-avg: ", salary)
             yield (f"employee-count-{idemp}", sector)
 
-    def count_reducer(self, key, values):
+    def reducer(self, key, values):
         if key.startswith("employee-count-"):
             count = 0
             previous_sectors = set()

@@ -1,0 +1,17 @@
+files_rdd_hdfs = sc.textFile("hdfs:///user/hadoop/datasets/gutenberg-small/*.txt")
+files_rdd_s3 = sc.textFile("s3://st0263spulido1/datasets/gutenberg-small/*.txt")
+
+wc_unsort_hdfs = files_rdd_hdfs.flatMap(lambda line: line.split()).map(lambda word: (word, 1)).reduceByKey(lambda a, b: a + b)
+wc_unsort_s3 = files_rdd_s3.flatMap(lambda line: line.split()).map(lambda word: (word, 1)).reduceByKey(lambda a, b: a + b)
+
+wc_hdfs = wc_unsort_hdfs.sortBy(lambda a: -a[1])
+wc_s3 = wc_unsort_s3.sortBy(lambda a: -a[1])
+
+for tup in wc_hdfs.take(10):
+    print(tup)
+
+for tup in wc_s3.take(10):
+    print(tup)
+
+wc_hdfs.saveAsTextFile("hdfs:///user/hadoop/results-wc-spark/wcount1")
+wc_s3.saveAsTextFile("s3://st0263spulido1/wcount1")

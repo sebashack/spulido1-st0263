@@ -80,3 +80,29 @@
 ### _Spark and hive run_
 
 ![spark-hive](assets/61/spark-and-hive.png)
+
+
+# 6.2 AWS Athena and Glue
+
+### _Crawler creation_
+
+![crawler_cre](assets/62/crawler-creation1.png)
+![crawler_cre](assets/62/crawler-creation2.png)
+![crawler_cre](assets/62/crawler-creation3.png)
+![crawler_cre](assets/62/crawler-creation4.png)
+![crawler_cre](assets/62/crawler-creation5.png)
+
+### _Running crawler_
+
+![running](assets/62/crawler-complted1.png)
+![running](assets/62/crawler-table.png)
+
+### _Queries from Athena_
+
+![query-athena](assets/62/athenaquery1.png)
+![query-athena](assets/62/athenaquery2.png)
+
+### _Queries from Hive_
+
+![query-hive](assets/62/hive-query1.png)
+![query-hive](assets/62/hive_query2.png)

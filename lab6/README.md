@@ -106,3 +106,37 @@
 
 ![query-hive](assets/62/hive-query1.png)
 ![query-hive](assets/62/hive_query2.png)
+
+
+# 6.3 AWS Redshift
+
+### _Cluster creation_
+
+![rs-cr](assets/63/cluster-creation1.png)
+![rs-cr](assets/63/cluster-creation2.png)
+![rs-cr](assets/63/cluster-creation3.png)
+![rs-cr](assets/63/cluster-creation4.png)
+
+
+### _Create schema and external DB
+
+![rs-cr](assets/63/externaldb-created.png)
+
+![rs-cr](assets/63/external-table-created.png)
+
+
+### _Data count_
+
+![count](assets/63/data-count.png)
+
+
+### _Create native table and load data_
+
+![native](assets/63/create-native-table.png)
+
+![native](assets/63/load-data.png)
+
+
+### _Join external and native table_
+
+![native-external](assets/63/table-join.png)

@@ -118,7 +118,7 @@
 ![rs-cr](assets/63/cluster-creation4.png)
 
 
-### _Create schema and external DB
+### _Create schema and external DB_
 
 ![rs-cr](assets/63/externaldb-created.png)
 
